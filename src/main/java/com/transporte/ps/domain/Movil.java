@@ -35,6 +35,10 @@ public class Movil {
 	@ManyToOne
 	@JoinColumn(name = "Modelo_idModelo")
 	private Modelo modelo;
+	
+	public Movil() {
+		super();
+	}
 
 	public Movil(Integer tuc, Integer chasis, Integer motor, Integer patente,
 			String observacion, Date anio) {

@@ -37,6 +37,10 @@ public class Modelo {
 		this.nombre = nombre;
 	}
 
+	public Modelo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Integer getId() {
 		return id;
 	}

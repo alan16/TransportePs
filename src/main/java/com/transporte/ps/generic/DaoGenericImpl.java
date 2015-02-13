@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import com.transporte.ps.hibernateUtil.HibernateUtil;;
+import com.transporte.ps.hibernateUtil.HibernateUtil;
+
+;
 
 public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		DaoGeneric<Entity, Key> {
@@ -23,6 +25,7 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 		return session;
+
 	}
 
 	@Override
@@ -37,14 +40,14 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 	@Override
 	public void Actualizar(Entity entity) {
 		// TODO Auto-generated method stub
-		getHibernateTemplate().update(entity);
+		getHibernateTemplate().update(entity.getClass().getName(), entity);
 		session.getTransaction().commit();
 	}
 
 	@Override
 	public Entity Buscar(Key id) {
 		// TODO Auto-generated method stub
-		System.out.println("La variable key es: " + id);
+		// System.out.println("La variable key es: " + id);
 		Entity entity = (Entity) getHibernateTemplate().get(type, id);
 		return entity;
 	}
@@ -70,7 +73,7 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 	public void close() {
 		// TODO Auto-generated method stub
 		getHibernateTemplate().close();
-		
+
 	}
 
 }

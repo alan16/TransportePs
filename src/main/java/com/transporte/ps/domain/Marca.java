@@ -23,7 +23,8 @@ public class Marca {
 	@Column(name = "nombre")
 	private String nombre;
 	
-	@OneToMany(mappedBy="marca",cascade = CascadeType.ALL)	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "Marca_idMarca")
 	private Set<Movil> moviles;
 
 	public Marca(Integer id, String nombre) {
