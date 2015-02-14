@@ -19,8 +19,7 @@ import com.transporte.ps.generic.DaoGenericImpl;
 
 public class ModeloMovilTest {
 
-	private DaoGeneric<Modelo, Integer> dao = new DaoGenericImpl<Modelo, Integer>(
-			Modelo.class);
+	private DaoGeneric<Modelo, Integer> dao = new DaoGenericImpl<Modelo, Integer>(Modelo.class);
 	private Modelo modelo = new Modelo();
 
 	@Before

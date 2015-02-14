@@ -37,7 +37,7 @@ public class MarcaServiceTest {
 
 	@Test
 	public void MarcaUpdateTest() {
-		Marca marca2 = marcaService.buscarMarca(7);
+		Marca marca2 = marcaService.buscarMarca(2);
 		marca2.setNombre("Fiat");
 		marcaService.updateMarca(marca2);
 		Assert.assertEquals("Fiat", marca2.getNombre());
@@ -46,7 +46,7 @@ public class MarcaServiceTest {
 	@Test
 	public void MarcaDeleteTest() {
 
-		Marca marca3 = marcaService.buscarMarca(6);
+		Marca marca3 = marcaService.buscarMarca(9);
 		assertEquals(marca.getNombre(), "Otra");
 		marcaService.deleteMarca(marca3);
 	}

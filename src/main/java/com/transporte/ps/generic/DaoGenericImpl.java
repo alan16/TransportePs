@@ -8,29 +8,28 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.transporte.ps.hibernateUtil.HibernateUtil;
+import com.transporte.ps.hibernateUtil.HibernateUtil2;
 
 ;
 
 public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		DaoGeneric<Entity, Key> {
 
+	private Class<Entity> type;
+
 	private Session session;
 
 	private SessionFactory sessionFactory;
 
-	private Class<Entity> type;
-
 	public DaoGenericImpl(Class<Entity> type) {
-
-		this.type = type;
 		sessionFactory = HibernateUtil.getSessionFactory();
-
+		this.type = type;
+		session = sessionFactory.openSession();
 	}
 
 	private Session getHibernateTemplate() {
-
+		session = sessionFactory.getCurrentSession();
 		return session;
-
 	}
 
 	@Override
@@ -38,15 +37,12 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// TODO Auto-generated method stub
 
 		try {
-			session = sessionFactory.openSession();
 			getHibernateTemplate().beginTransaction();
 			getHibernateTemplate().save(entity);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			// TODO: handle exception
 			session.getTransaction().rollback();
-		} finally {
-			this.close();
 		}
 
 	}
@@ -55,15 +51,13 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 	public void Actualizar(Entity entity) {
 		// TODO Auto-generated method stub
 		try {
-			session = sessionFactory.openSession();
+
 			getHibernateTemplate().beginTransaction();
 			getHibernateTemplate().update(entity);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			// TODO: handle exception
-			session.getTransaction().rollback();
-		} finally {
-			this.close();
+			getHibernateTemplate().getTransaction().rollback();
 		}
 	}
 
@@ -73,16 +67,16 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// System.out.println("La variable key es: " + id);
 		Entity entity = null;
 		try {
-			session = sessionFactory.openSession();
+			getHibernateTemplate().beginTransaction();
 			entity = (Entity) getHibernateTemplate().get(type, id);
-			
+			getHibernateTemplate().getTransaction().commit();
 		} catch (Exception e) {
-			// TODO: handle exception			
-		} finally {
-			this.close();
+			// TODO: handle exception
+			getHibernateTemplate().getTransaction().rollback();
 		}
+
 		return entity;
-		
+
 	}
 
 	@Override
@@ -90,15 +84,14 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// TODO Auto-generated method stub
 
 		try {
-			session = sessionFactory.openSession();
+
 			getHibernateTemplate().beginTransaction();
 			getHibernateTemplate().delete(entity);
-			session.getTransaction().commit();
+			getHibernateTemplate().getTransaction().commit();
+
 		} catch (Exception e) {
 			// TODO: handle exception
-			session.getTransaction().rollback();
-		} finally {
-			this.close();
+			getHibernateTemplate().getTransaction().rollback();
 		}
 
 	}
@@ -107,7 +100,17 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 	public List<Entity> getAll() {
 		// TODO Auto-generated method stub
 
-		Criteria crit = getHibernateTemplate().createCriteria(type);
+		Criteria crit = null;
+		try {
+			getHibernateTemplate().beginTransaction();
+			crit = getHibernateTemplate().createCriteria(type);
+			getHibernateTemplate().getTransaction().commit();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			getHibernateTemplate().getTransaction().rollback();
+		}
+
 		return crit.list();
 
 	}

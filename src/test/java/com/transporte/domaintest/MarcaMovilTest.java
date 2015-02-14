@@ -15,8 +15,7 @@ import com.transporte.ps.hibernateUtil.HibernateUtil;
 
 public class MarcaMovilTest {
 
-	private DaoGeneric<Marca, Integer> dao = new DaoGenericImpl<Marca, Integer>(
-			Marca.class);
+	private DaoGeneric<Marca, Integer> dao = new DaoGenericImpl<Marca, Integer>(Marca.class);
 	private Marca marca;
 
 	@Before
