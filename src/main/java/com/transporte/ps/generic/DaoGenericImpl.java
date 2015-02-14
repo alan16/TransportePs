@@ -2,8 +2,11 @@ package com.transporte.ps.generic;
 
 import java.io.Serializable;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.transporte.ps.hibernateUtil.HibernateUtil;
 
 ;
@@ -13,17 +16,19 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 
 	private Session session;
 
+	private SessionFactory sessionFactory;
+
 	private Class<Entity> type;
 
 	public DaoGenericImpl(Class<Entity> type) {
 
 		this.type = type;
+		sessionFactory = HibernateUtil.getSessionFactory();
 
 	}
 
 	private Session getHibernateTemplate() {
-		session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+
 		return session;
 
 	}
@@ -32,31 +37,69 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 	public void Guardar(Entity entity) {
 		// TODO Auto-generated method stub
 
-		getHibernateTemplate().save(entity);
-		session.getTransaction().commit();
+		try {
+			session = sessionFactory.openSession();
+			getHibernateTemplate().beginTransaction();
+			getHibernateTemplate().save(entity);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			session.getTransaction().rollback();
+		} finally {
+			this.close();
+		}
 
 	}
 
 	@Override
 	public void Actualizar(Entity entity) {
 		// TODO Auto-generated method stub
-		getHibernateTemplate().update(entity.getClass().getName(), entity);
-		session.getTransaction().commit();
+		try {
+			session = sessionFactory.openSession();
+			getHibernateTemplate().beginTransaction();
+			getHibernateTemplate().update(entity);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			session.getTransaction().rollback();
+		} finally {
+			this.close();
+		}
 	}
 
 	@Override
 	public Entity Buscar(Key id) {
 		// TODO Auto-generated method stub
 		// System.out.println("La variable key es: " + id);
-		Entity entity = (Entity) getHibernateTemplate().get(type, id);
+		Entity entity = null;
+		try {
+			session = sessionFactory.openSession();
+			entity = (Entity) getHibernateTemplate().get(type, id);
+			
+		} catch (Exception e) {
+			// TODO: handle exception			
+		} finally {
+			this.close();
+		}
 		return entity;
+		
 	}
 
 	@Override
 	public void Eliminar(Entity entity) {
 		// TODO Auto-generated method stub
-		getHibernateTemplate().delete(entity);
-		session.getTransaction().commit();
+
+		try {
+			session = sessionFactory.openSession();
+			getHibernateTemplate().beginTransaction();
+			getHibernateTemplate().delete(entity);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			session.getTransaction().rollback();
+		} finally {
+			this.close();
+		}
 
 	}
 
