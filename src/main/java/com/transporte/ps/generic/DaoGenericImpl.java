@@ -24,12 +24,13 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 	public DaoGenericImpl(Class<Entity> type) {
 		sessionFactory = HibernateUtil.getSessionFactory();
 		this.type = type;
-		session = sessionFactory.openSession();
+
 	}
 
 	private Session getHibernateTemplate() {
-		session = sessionFactory.getCurrentSession();
+
 		return session;
+
 	}
 
 	@Override
@@ -37,12 +38,15 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// TODO Auto-generated method stub
 
 		try {
+			session = sessionFactory.openSession();
 			getHibernateTemplate().beginTransaction();
 			getHibernateTemplate().save(entity);
-			session.getTransaction().commit();
+			getHibernateTemplate().getTransaction().commit();
 		} catch (Exception e) {
 			// TODO: handle exception
 			session.getTransaction().rollback();
+		} finally {
+			this.close();
 		}
 
 	}
@@ -52,12 +56,15 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// TODO Auto-generated method stub
 		try {
 
+			session = sessionFactory.openSession();
 			getHibernateTemplate().beginTransaction();
 			getHibernateTemplate().update(entity);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			// TODO: handle exception
 			getHibernateTemplate().getTransaction().rollback();
+		} finally {
+			this.close();
 		}
 	}
 
@@ -67,12 +74,15 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// System.out.println("La variable key es: " + id);
 		Entity entity = null;
 		try {
+			session = sessionFactory.openSession();
 			getHibernateTemplate().beginTransaction();
 			entity = (Entity) getHibernateTemplate().get(type, id);
 			getHibernateTemplate().getTransaction().commit();
 		} catch (Exception e) {
 			// TODO: handle exception
 			getHibernateTemplate().getTransaction().rollback();
+		} finally {
+			this.close();
 		}
 
 		return entity;
@@ -84,7 +94,7 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		// TODO Auto-generated method stub
 
 		try {
-
+			session = sessionFactory.openSession();
 			getHibernateTemplate().beginTransaction();
 			getHibernateTemplate().delete(entity);
 			getHibernateTemplate().getTransaction().commit();
@@ -92,6 +102,8 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		} catch (Exception e) {
 			// TODO: handle exception
 			getHibernateTemplate().getTransaction().rollback();
+		} finally {
+			this.close();
 		}
 
 	}
@@ -102,6 +114,7 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 
 		Criteria crit = null;
 		try {
+			session = sessionFactory.openSession();
 			getHibernateTemplate().beginTransaction();
 			crit = getHibernateTemplate().createCriteria(type);
 			getHibernateTemplate().getTransaction().commit();
@@ -109,6 +122,8 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 		} catch (Exception e) {
 			// TODO: handle exception
 			getHibernateTemplate().getTransaction().rollback();
+		} finally {
+			this.close();
 		}
 
 		return crit.list();
