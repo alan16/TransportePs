@@ -1,0 +1,27 @@
+
+<h3>Agregar una marca de Automovil</h3>
+<form name="movilForm">
+<label>Tuc: </label><br>
+<input type="text" ng-model="movil.tuc" name="tuc"><br>
+<label>Patente: </label>
+<input type="text" ng-model="movil.patente" name="patente"><br>
+<label>Motro: </label>
+<input type="text" ng-model="movil.motor" name="motor"><br>
+<label>Chasis: </label>
+<input type="text" ng-model="movil.chasis" name="chasis"><br>
+<label>tipo: </label>
+<select ng-model="movil.tipo" ng-options="tipo.nombre for tipo in tipos">
+	<option value ="">Elija tipo</option>
+</select><br>
+<label>Marca: </label>
+<select ng-model="movil.marca" ng-options="marca.nombre for marca in marcas">
+	<option>Elija marca</option>
+</select><br>
+<label>Modelo: </label>
+<select ng-model="movil.modelo" ng-options="modelo.nombre for modelo in modelos">
+	<option >Elija modelo</option>
+</select>
+<br>
+<button>Guardar</button>
+</form>
+

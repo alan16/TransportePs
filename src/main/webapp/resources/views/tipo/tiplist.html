@@ -1,0 +1,18 @@
+<h1>Tipos</h1> 
+<table>
+    <thead>
+      <tr>        
+        <th>Numero</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>    
+    <tbody>
+      <tr ng-repeat="tipo in tipos" ng-style="{color:($odd?'red':'green')}">        
+        <td>{{tipo.id}}</td>
+        <td>{{tipo.nombre}}</td>        
+        <td><a href="#tipo/edit/{{tipo.id}}">Editar</a></td>
+        <td><a href="" ng-click="del(tipo.id,url2)">Eliminar</a></td>        
+      </tr>
+    </tbody>
+    </table>

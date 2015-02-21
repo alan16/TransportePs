@@ -1,0 +1,18 @@
+<h1>Marcas</h1> 
+<table>
+    <thead>
+      <tr>        
+        <th>Numero</th>
+        <th>Nombre</th>
+        <th>Acciones </th>
+      </tr>
+    </thead>    
+    <tbody>
+      <tr ng-repeat="marca in marcas" ng-style="{color:($odd?'red':'green')}">        
+        <td>{{marca.id}}</td>
+        <td>{{marca.nombre}}</td>
+        <td><a href="#marca/edit/{{marca.id}}">Editar</a></td>
+        <td><a href="" ng-click="del(marca.id,url2)">Eliminar</a></td>        
+      </tr>
+    </tbody>
+    </table>
