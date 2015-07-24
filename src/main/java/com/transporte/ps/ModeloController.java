@@ -12,9 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.transporte.ps.domain.Marca;
-import com.transporte.ps.domain.Modelo;
-import com.transporte.ps.domain.Modelo;
 import com.transporte.ps.domain.Modelo;
 import com.transporte.ps.service.ModelosService;
 import com.transporte.ps.service.ModeloServiceImp;
@@ -41,6 +38,7 @@ public class ModeloController {
 			jsonArray.add(jsonObjet);
 		}
 		String stringModelos = jsonArray.toString();
+		System.out.println(stringModelos);
 		return stringModelos;
 	}
 

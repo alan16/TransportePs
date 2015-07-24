@@ -13,6 +13,8 @@ public interface DaoGeneric<Entity, Key> {
 	void Eliminar(Entity entity);
 	
 	List<Entity> getAll();
+	
+	List<Object[]>getAllObjets(String sql);
 
 	void close();
 }

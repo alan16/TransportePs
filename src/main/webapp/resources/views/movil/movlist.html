@@ -9,6 +9,8 @@
         <th>Marca</th>
         <th>Modelo</th>
         <th>Tipo</th>
+        <th>Eliminar</th>
+        <th>Editar</th>
       </tr>
     </thead>    
     <tbody>            
@@ -20,6 +22,9 @@
         <th>{{movil.marca.nombre}}</th>
         <th>{{movil.modelo.nombre}}</th>
         <th>{{movil.tipo.nombre}}</th>
+        <th><a href="#movil/edit/{{movil.tuc}}">Editar</a></th>
+        <th><a href="" ng-click="del(movil.tuc, url2)"></a>Eliminar</th>
+        <th></th>
       </tr>
     </tbody>
     </table>

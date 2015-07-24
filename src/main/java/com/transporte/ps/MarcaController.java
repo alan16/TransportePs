@@ -57,6 +57,7 @@ public class MarcaController {
 			jsonArray.add(jsonObjet);
 		}
 		String stringMarcas = jsonArray.toString();
+		//System.out.println(stringMarcas);
 		return stringMarcas;
 	}
 

@@ -1,78 +1,36 @@
 angular.module("movilController",["Service1"])
-.controller("movillistController", ["$scope","remoteResources",function($scope,remoteResources) {   
-   $scope.moviles = [{
-    tuc:"1",
-    chasis:"1",
-    motor:"1",
-    patente:"1",
-    marca:{
-      id:"1",
-      nombre:"hola"
-    },
-    modelo:{
-      id:"1",
-      nombre:"hola"
-    },
-    tipo:{
-      id:"1",
-      nombre:"chau"
-    }
+.controller("movillistController", ["$scope", "moviles","remoteResources","$location", function($scope, moviles,remoteResources, $location) {
 
-   },
-   {
-    tuc:"",
-    chasis:"",
-    motor:"",
-    patente:"",
-    marca:{
-      id:"",
-      nombre:""
-    },
-    modelo:{
-      id:"",
-      nombre:""
-    },
-    tipo:{
-      id:"",
-      nombre:""
-    }
+    $scope.url = "getAllMovil.html";
+    $scope.url2 = "deleteMovil.html/";
+    $scope.moviles = moviles;    
 
-   }];
-    
-    // $scope.guardar=function(){
-    // 	remoteResources.insert($scope.correo);  	
+    $scope.del = function(id, url) {
+        remoteResources.delet(id, url).then(function() {
+            $location.path("/movil/list")
+        });
+    }        
     
 }])
-.controller("movileditController", ["$scope","remoteResources",function($scope,remoteResources) {
+.controller("movileditController", ["$scope", "remoteResources", "movil", "$location",
+                                      function($scope, remoteResources, movil, $location) {
+
+    $scope.url = "updateMovil.html";
+    $scope.movil = movil;
+    $scope.modificar = function() {
+        remoteResources.update($scope.movil, $scope.url);
+        $location.path("/movil/list");
+    }
+
+}])
+.controller("movilnuevoController", ["$scope", "remoteResources", "$location",
+                                     function($scope, remoteResources, $location) {
    
-   $scope.movil={
-    tuc:1,
-    chasis:2,
-    motor:3,
-    patente:4,
-    marca:{
-      id:"",
-      nombre:""
-    },
-    modelo:{
-      id:"",
-      nombre:""
-    },
-    tipo:{
-      id:"",
-      nombre:""
-    }
-   };
-
-	// remoteResources.get(function(seguro){
- //    	$scope.datos=seguro;
- //    },function(data,status){
- //    	alert("Ha fallado la peticion. Estado HTTP:" + status);
- //    });
-
-}])
-.controller("movilnuevoController", ["$scope",function($scope) {
-   $scope.movil={
+	$scope.urlModel="getAllModelos.html";
+	$scope.urlMarca="getAllMarcas.html";
+	$scope.urlTipo="getAllTipos.html";
+	
+	$scope.movil={
     tuc:"",
     chasis:"",
     motor:"",
@@ -91,26 +49,24 @@ angular.module("movilController",["Service1"])
     }
 
    };
-   $scope.modelos=[{
-      id: 1,
-      nombre: "xx5"
-      },      
-      {id:2,
-      nombre:"208"
-      }];
-   $scope.marcas=[{
-      id: 1,
-      nombre: "Fiat"
-      },      
-      {id:2,
-      nombre:"Renault"
-      }];
-   $scope.tipos=[{
-      id: 1,
-      nombre: "auto"
-      },      
-      {id:2,
-      nombre:"moto"
-      }];
+   $scope.modelos=[];
+   $scope.marcas=[];
+   $scope.tipos=[];
+   
+   remoteResources.list($scope.urlModel).then(function(modelos) {
+       $scope.modelos = modelos;
+   });
+   remoteResources.list($scope.urlMarca).then(function(marcas) {
+       $scope.marcas = marcas;
+   });
+   remoteResources.list($scope.urlTipo).then(function(tipos) {
+       $scope.tipos = tipos;
+   });
+   
+   $scope.url = "guardarMovil.html";
+   $scope.guardar = function() {
+       remoteResources.insert($scope.url, $scope.movil);
+       $location.path("/movil/list");
+   };
 
 }]);

@@ -6,8 +6,11 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.management.Query;
 
 import com.transporte.ps.hibernateUtil.HibernateUtil;
 import com.transporte.ps.hibernateUtil.HibernateUtil2;
@@ -218,6 +221,38 @@ public class DaoGenericImpl<Entity, Key extends Serializable> implements
 
 		return entidades;
 
+	}
+	
+	@Override
+	public List<Object[]> getAllObjets(String sql) {
+		
+		List<Object[]> listDatos = null;
+		
+		try{
+			session=sessionFactory.openSession();
+			session.beginTransaction();
+			Query query = (Query) session.createQuery(sql);
+			 listDatos= ((Criteria) query).list();
+		}catch(Exception e){
+			try {
+				if (getHibernateTemplate().getTransaction().isActive()) {
+					getHibernateTemplate().getTransaction().rollback();
+				}
+			} catch (Exception exc) {
+				LOGGER.log(Level.WARNING, "Falló al hacer un rollback", exc);
+			}
+		}finally{
+			try {
+				if (getHibernateTemplate().isOpen()) {
+					close();
+				}
+
+			} catch (Exception e) {
+				LOGGER.log(Level.WARNING, "Error closing session", e);
+			}
+		}
+		
+		return listDatos;
 	}
 
 	@Override
